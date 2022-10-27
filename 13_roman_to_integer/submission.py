@@ -12,9 +12,7 @@ class Solution(object):
             "D" : 500,
             "M" : 1000
         }
-        chars = ["I", "V", "X", "L", "C", "D", "M"]
-        vals = [1, 5, 10, 50, 100, 500, 1000]
-        
+
         open_list = list(s.strip().upper())
         
         if not 1 <= len(open_list) <= 15:
@@ -51,21 +49,16 @@ class Solution(object):
                 # multiples of the same char
                 elif first == second and first in multis:
                     if len(open_list) == 0:
-                        closed_list.append(numeral[first])
-                        closed_list.append(numeral[second])
+                        closed_list.extend([numeral[first], numeral[second]])
                     else:
                         third = open_list.pop()
                         if first == third: # this is the last legal multiple char we can tolerate.
                             if len(open_list) == 0:
-                                closed_list.append(numeral[first])
-                                closed_list.append(numeral[second])
-                                closed_list.append(numeral[third])
+                                closed_list.extend([numeral[first], numeral[second], numeral[third]])
                             else:
                                 fourth = open_list.pop()
                                 if numeral[fourth] > numeral[first]:
-                                    closed_list.append(numeral[first])
-                                    closed_list.append(numeral[second])
-                                    closed_list.append(numeral[third])
+                                    closed_list.extend([numeral[first], numeral[second], numeral[third]])
                                     open_list.append(fourth)
                                 else:
                                     raise Exception("Invalid input!")
@@ -97,10 +90,10 @@ class Solution(object):
                 first = open_list.pop()
                 closed_list.append(numeral[first])
 
-        print closed_list
         r = sum(closed_list)
-        print r
+
         if r > 3999:
             raise Exception("Number too big!")
+            
         else:
             return r
